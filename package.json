@@ -1,0 +1,43 @@
+{
+  "name": "asw-calc",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015-node6": "^0.4.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint-plugin-import": "^2.6.1",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "font-awesome": "^4.7.0",
+    "fs-extra": "^4.0.1",
+    "lodash": "^4.17.4",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "react-scripts": "1.0.17",
+    "react-bootstrap": "^0.31.0",
+    "react-fontawesome": "^1.6.1",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.1",
+    "redux-observers": "^2.0.2",
+    "reselect": "^3.0.1",
+    "subtender": "^0.12.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "gh-pages": "^1.0.0",
+    "react-scripts": "1.0.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "eject": "react-scripts eject",
+    "lint": "eslint 'src/**/*.js' 'mocha-tests/**/*.js'"
+  }
+}
