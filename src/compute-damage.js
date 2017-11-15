@@ -64,6 +64,26 @@ const engagementConsts = {
   tDisadv: .6,
 }
 
+const describeConstsIntern = {
+  tAdv: 'T字戦有利',
+  parallel: '同航戦',
+  headOn: '反航戦',
+  tDisadv: 'T字戦不利',
+
+  lineAhead: '単縦陣',
+  doubleLine: '複縦陣',
+  diamond: '輪形陣',
+  echelon: '梯形陣',
+  lineAbreast: '単横陣',
+  cruisingForm1: '第一警戒航行序列（対潜警戒）',
+  cruisingForm2: '第二警戒航行序列（前方警戒）',
+  cruisingForm3: '第三警戒航行序列（輪形陣）',
+  cruisingForm4: '第四警戒航行序列（戦闘隊形）',
+}
+
+const describeConsts = str =>
+  (str in describeConstsIntern) ? describeConstsIntern[str] : str
+
 const computeDamageAdvanced = args => {
   const {
     // 0 ~ 1
@@ -289,4 +309,5 @@ export {
   computeDamageAdvanced,
   computeDamageRange,
   computeResultRows,
+  describeConsts,
 }

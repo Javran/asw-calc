@@ -14,6 +14,7 @@ import {
 } from 'react-bootstrap'
 
 import {
+  describeConsts,
   allAswEquips,
   findEquip,
   digestEquips,
@@ -30,14 +31,14 @@ const defState = {
   equipsRaw: {
     // sonar
     46: '0,0,0,0',
-    47: '0,0,0,0',
-    149: '0,0,0,0',
+    47: '6,6,5,5',
+    149: '6,6,6',
     260: '0',
     261: '-',
     262: '-',
     // dcp
     44: '0,0,0,0',
-    45: '0,0,0,0',
+    45: '6,6,6,6',
     // dc
     226: '0,0,0,0',
     227: '0,0',
@@ -181,7 +182,7 @@ class AswCalcMain extends PureComponent {
               componentClass="select" value={formation}>
               {
                 Object.keys(aswFormationConsts).map(key => (
-                  <option key={key} value={key}>{key}</option>
+                  <option key={key} value={key}>{describeConsts(key)}</option>
                 ))
               }
             </FormControl>
@@ -290,8 +291,8 @@ class AswCalcMain extends PureComponent {
                 <td>Equipments</td>
                 {
                   Object.keys(engagementConsts).map(k => (
-                    <td style={{width: '18%'}} key={k}>
-                      {k}
+                    <td style={{width: '18%', textAlign: 'center'}} key={k}>
+                      {describeConsts(k)}
                     </td>
                   ))
                 }
