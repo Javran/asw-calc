@@ -6,11 +6,15 @@ import {
   chainComparators,
 } from 'subtender'
 import React, { PureComponent } from 'react'
+import Markdown from 'react-remarkable'
 import {
   Panel,
   FormControl,
   Button,
   Table,
+  OverlayTrigger,
+  Tooltip,
+  Alert,
 } from 'react-bootstrap'
 
 import {
@@ -72,10 +76,33 @@ const parseSlot = raw => {
   return parsedSlots
 }
 
+const genTooltip = raw => {
+  const parsed = parseSlot(raw)
+  if (Array.isArray(parsed)) {
+    return (
+      <div>
+        <div>Count: {parsed.length}</div>
+        <div>Improvement:
+          {
+            parsed.length === 0 ?
+              'None' :
+              parsed.map(x => x === 0 ? '0' : `+${x}`).join(', ')
+          }
+        </div>
+      </div>
+    )
+  } else {
+    return 'Invalid input'
+  }
+}
+
 class AswCalcMain extends PureComponent {
   constructor(props) {
     super(props)
-    this.state = defState
+    this.state = {
+      ...defState,
+      showSlotHint: true,
+    }
   }
 
   handleReset = () =>
@@ -137,7 +164,7 @@ class AswCalcMain extends PureComponent {
   render() {
     const {
       shipBaseAsw, formation, defendingArmor,
-      slotCount, equipsRaw, results,
+      slotCount, equipsRaw, results, showSlotHint,
     } = this.state
 
     const inputValid = _.toPairs(equipsRaw).every(([_idStr, slotStr]) =>
@@ -227,6 +254,31 @@ class AswCalcMain extends PureComponent {
               }
             </FormControl>
           </div>
+          {
+            showSlotHint && (
+              <Alert
+                onDismiss={() => this.setState({showSlotHint: false})}
+                style={{margin: 5}}
+              >
+                <Markdown
+                  source={
+                    [
+                      "In the following section:",
+                      "- Input `-` or leave it empty if you do not have a specific equipment",
+                      "- For each equipment, input improvement levels (`0` ~ `10`) and separate them by comma.",
+                      "",
+                      "    Each number stands for one equipment with specified improvement level.",
+                      "- `x` or `X` can be used, which are just synonyms of `10`",
+                      "- Up to 4 numbers can be inputed",
+                      "",
+                      "    This constraint intends to reduce the amount of computation,",
+                      "    It's therefore suggested to only include equipments of highest improvement levels",
+                    ].join('\n')
+                  }
+                />
+              </Alert>
+            )
+          }
           <div
             style={{display: 'flex', flexWrap: 'wrap'}}
           >
@@ -241,21 +293,30 @@ class AswCalcMain extends PureComponent {
                     margin: 5,
                   }}>
                   <div style={{width: '50%'}}>{equipInfo.name}</div>
-                  <FormControl
-                    onChange={
-                      this.handleChange(raw =>
-                        modifyObject(
-                          'equipsRaw',
+                  <OverlayTrigger
+                    overlay={
+                      <Tooltip id={`parameter-equip-hint-${equipInfo.id}`}>
+                        {genTooltip(equipsRaw[equipInfo.id])}
+                      </Tooltip>
+                    }
+                    placement="top"
+                  >
+                    <FormControl
+                      onChange={
+                        this.handleChange(raw =>
                           modifyObject(
-                            equipInfo.id,
-                            () => raw
+                            'equipsRaw',
+                            modifyObject(
+                              equipInfo.id,
+                              () => raw
+                            )
                           )
                         )
-                      )
-                    }
-                    style={{flex: 1}}
-                    type="text" value={equipsRaw[equipInfo.id]}
-                  />
+                      }
+                      style={{flex: 1}}
+                      type="text" value={equipsRaw[equipInfo.id]}
+                    />
+                  </OverlayTrigger>
                 </div>
               ))
             }
